@@ -8,7 +8,7 @@ local RSP = RS.Players:WaitForChild(Player.Name)
 
 --// GUI
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "XenoBetaHub"
+Gui.Name = "NebulaHub"
 Gui.ResetOnSpawn = false
 Gui.Parent = PlayerGui
 
@@ -45,7 +45,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -100, 1, 0)
 Title.Position = UDim2.new(0, 14, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Beta"
+Title.Text = "Nebula"
 Title.TextColor3 = Color3.fromRGB(235, 235, 240)
 Title.TextSize = 16
 Title.Font = Enum.Font.GothamBold
@@ -56,7 +56,7 @@ local Version = Instance.new("TextLabel")
 Version.Size = UDim2.new(0, 55, 1, 0)
 Version.Position = UDim2.new(0, 82, 0, 0)
 Version.BackgroundTransparency = 1
-Version.Text = "v1.0"
+Version.Text = "v1.1"
 Version.TextColor3 = Color3.fromRGB(100, 100, 110)
 Version.TextSize = 11
 Version.Font = Enum.Font.Gotham
@@ -197,8 +197,7 @@ Status.Parent = Content
 local Items = {
     "Gold50g",
     "Rubles",
-    "FlareGun",
-    "7.62.39T"
+    "FlareGun"
 }
 
 local CurrentItem = 1
@@ -215,7 +214,7 @@ Item.MouseButton1Click:Connect(function()
     Status.Text = "●  Selected: " .. Items[CurrentItem]
 end)
 
---// Execute trade
+--// Execute trade - FIXED DUPE LOGIC
 Execute.MouseButton1Click:Connect(function()
     local amount = tonumber(Amount.Text)
 
@@ -226,10 +225,10 @@ Execute.MouseButton1Click:Connect(function()
     end
 
     amount = math.floor(amount)
-
     local itemName = Items[CurrentItem]
 
-    local Inventory = RSP.Inventory.WastelandShirt.Inventory
+    --// Find item in inventory - check multiple paths
+    local Inventory = RSP:FindFirstChild("Inventory") or RSP.Inventory.WastelandShirt.Inventory
     local ItemX = Inventory:FindFirstChild(itemName)
 
     if not ItemX then
@@ -246,39 +245,46 @@ Execute.MouseButton1Click:Connect(function()
         return
     end
 
+    --// Build trade list - reference same item N times
     local tradeList = {}
-
     for i = 1, amount do
         table.insert(tradeList, ItemX)
     end
 
+    --// CRITICAL FIX: Wait between update and confirm
     local success, result = pcall(function()
         return Trade:InvokeServer({
             Action = "Update",
-            TradeList = tradeList
+            TradeList = tradeList,
+            Item = itemName
         })
     end)
 
     if not success then
         Status.Text = "●  Update failed"
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
-        warn(result)
+        warn("Update error: " .. tostring(result))
         return
     end
 
+    --// TIMING FIX: Small delay ensures server processes update
+    wait(0.15)
+
     local confirmSuccess, confirmResult = pcall(function()
         return Trade:InvokeServer({
-            Action = "Confirm"
+            Action = "Confirm",
+            Item = itemName,
+            Amount = amount
         })
     end)
 
     if confirmSuccess then
-        Status.Text = "●  Executed " .. amount .. "x " .. itemName
+        Status.Text = "●  Duped " .. amount .. "x " .. itemName
         Status.TextColor3 = Color3.fromRGB(100, 190, 125)
     else
         Status.Text = "●  Confirm failed"
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
-        warn(confirmResult)
+        warn("Confirm error: " .. tostring(confirmResult))
     end
 end)
 
