@@ -119,46 +119,37 @@ ContentContainer.Parent = Main
 
 --// ===== FUNCTIONS =====
 local function applyTheme(color)
-    -- Main
+    currentColor = color
+    
     Main.BackgroundColor3 = Color3.fromRGB(
         math.max(5, math.floor(color.R * 0.05)),
         math.max(5, math.floor(color.G * 0.05)),
         math.max(5, math.floor(color.B * 0.06))
     )
-    MainCorner.Parent = Main
     
-    -- Top
     Top.BackgroundColor3 = Color3.fromRGB(
         math.max(8, math.floor(color.R * 0.07)),
         math.max(8, math.floor(color.G * 0.07)),
         math.max(8, math.floor(color.B * 0.08))
     )
     
-    -- Sidebar
     Sidebar.BackgroundColor3 = Color3.fromRGB(
         math.max(7, math.floor(color.R * 0.06)),
         math.max(7, math.floor(color.G * 0.06)),
         math.max(7, math.floor(color.B * 0.08))
     )
     
-    -- Execute button
     Execute.BackgroundColor3 = color
-    
-    -- Size fill
     SizeFill.BackgroundColor3 = color
-    
-    -- Color preview
     ColorPreview.BackgroundColor3 = color
     
-    -- Tab active color
-    if TradeContent.Visible then
+    if TradeTab.Visible and TradeContent.Visible then
         TradeTab.BackgroundColor3 = color
     end
-    if SettingsContent.Visible then
+    if SettingsTab.Visible and SettingsContent.Visible then
         SettingsTab.BackgroundColor3 = color
     end
     
-    -- Stroke color
     Stroke.Color = Color3.fromRGB(
         math.min(255, color.R + 30),
         math.min(255, color.G + 30),
@@ -167,7 +158,9 @@ local function applyTheme(color)
 end
 
 local function updateUISize(scale)
+    scale = math.max(0.6, math.min(1.5, scale))
     uiScale = scale
+    
     local baseW = 360 * scale
     local baseH = 230 * scale
     
@@ -175,7 +168,7 @@ local function updateUISize(scale)
     Main.Position = UDim2.new(0.5, -baseW/2, 0.5, -baseH/2)
     
     SizeLabel.Text = "UI Size: " .. math.floor(scale * 100) .. "%"
-    SizeFill.Size = UDim2.new(scale, 0, 1, 0)
+    SizeFill.Size = UDim2.new(scale / 1.5, 0, 1, 0)
 end
 
 local function createTabButton(text, y)
@@ -371,7 +364,6 @@ ColorPreviewCorner.Parent = ColorPreview
 
 -- Color buttons
 local colorButtons = {}
-local colorIndex = 1
 local colorNames = {"Blue", "Red", "Green", "Purple", "Orange", "Cyan", "Pink"}
 
 for i, name in ipairs(colorNames) do
@@ -388,8 +380,7 @@ for i, name in ipairs(colorNames) do
     corner.Parent = btn
     
     btn.MouseButton1Click:Connect(function()
-        currentColor = ThemeColors[name]
-        applyTheme(currentColor)
+        applyTheme(ThemeColors[name])
         Status.Text = "●  Theme changed to " .. name
         Status.TextColor3 = Color3.fromRGB(100, 190, 125)
     end)
@@ -419,7 +410,6 @@ SettingsTab.MouseButton1Click:Connect(function()
     TradeTab.TextColor3 = Color3.fromRGB(210, 210, 215)
 end)
 
--- Default
 TradeTab.BackgroundColor3 = currentColor
 TradeTab.TextColor3 = Color3.fromRGB(255, 255, 255)
 
@@ -428,13 +418,26 @@ local Items = {
     { display = "Gold50g", search = {"Gold50g"} },
     { display = "Rubles", search = {"Rubles"} },
     { display = "FlareGun", search = {"FlareGun"} },
-    { display = "7.62x39 Tracer", search = {"7.62x39 Tracer Bullet", "7.62x39 Tracer"} }
+    { display = "7.62x39 Tracer", search = {"7.62x39 Tracer", "7.62x39 Tracer Bullet"} }
 }
 local CurrentItem = 1
 
 local function findItem(itemName)
     local Inventory = RSP.Inventory.WastelandShirt.Inventory
-    return Inventory:FindFirstChild(itemName)
+    
+    -- Direct search
+    local found = Inventory:FindFirstChild(itemName)
+    if found then return found end
+    
+    -- Fuzzy search through all children
+    for _, child in ipairs(Inventory:GetChildren()) do
+        if child.Name:lower():match(itemName:lower():gsub(" ", "")) or 
+           itemName:lower():match(child.Name:lower():gsub(" ", "")) then
+            return child
+        end
+    end
+    
+    return nil
 end
 
 Item.MouseButton1Click:Connect(function()
@@ -504,15 +507,42 @@ Execute.MouseButton1Click:Connect(function()
     end
 end)
 
---// ===== SIZE =====
+--// ===== SIZE SLIDER =====
+local sliderDragging = false
+
+SizeSlider.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        sliderDragging = true
+    end
+end)
+
+SizeSlider.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        sliderDragging = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if sliderDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local mouse = Players:GetMouse()
+        local sliderPos = SizeSlider.AbsolutePosition.X
+        local sliderSize = SizeSlider.AbsoluteSize.X
+        local mouseX = mouse.X
+        
+        local percent = math.max(0, math.min(1, (mouseX - sliderPos) / sliderSize))
+        local newScale = 0.6 + (percent * 0.9)
+        
+        updateUISize(newScale)
+    end
+end)
+
+--// ===== SIZE BUTTONS =====
 SizeMinus.MouseButton1Click:Connect(function()
-    local newScale = math.max(0.6, uiScale - 0.1)
-    updateUISize(newScale)
+    updateUISize(uiScale - 0.1)
 end)
 
 SizePlus.MouseButton1Click:Connect(function()
-    local newScale = math.min(1.5, uiScale + 0.1)
-    updateUISize(newScale)
+    updateUISize(uiScale + 0.1)
 end)
 
 --// ===== MINIMIZE =====
@@ -569,5 +599,4 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
---// Apply initial theme
 applyTheme(currentColor)
