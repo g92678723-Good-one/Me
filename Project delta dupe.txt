@@ -8,7 +8,7 @@ local RSP = RS.Players:WaitForChild(Player.Name)
 
 --// GUI
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "NebulaHub"
+Gui.Name = "XenoBetaHub"
 Gui.ResetOnSpawn = false
 Gui.Parent = PlayerGui
 
@@ -45,7 +45,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -100, 1, 0)
 Title.Position = UDim2.new(0, 14, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Nebula"
+Title.Text = "Beta"
 Title.TextColor3 = Color3.fromRGB(235, 235, 240)
 Title.TextSize = 16
 Title.Font = Enum.Font.GothamBold
@@ -197,7 +197,8 @@ Status.Parent = Content
 local Items = {
     "Gold50g",
     "Rubles",
-    "FlareGun"
+    "FlareGun",
+    "7.62.39T"
 }
 
 local CurrentItem = 1
