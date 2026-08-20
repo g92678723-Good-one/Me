@@ -1,0 +1,547 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RS = game:GetService("ReplicatedStorage")
+
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+local RSP = RS.Players:WaitForChild(Player.Name)
+
+--// GUI
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "XenoBetaHub"
+Gui.ResetOnSpawn = false
+Gui.Parent = PlayerGui
+
+--// Main
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(0, 360, 0, 230)
+Main.Position = UDim2.new(0.5, -180, 0.5, -115)
+Main.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Parent = Gui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = Main
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Color = Color3.fromRGB(55, 55, 65)
+Stroke.Thickness = 1
+Stroke.Parent = Main
+
+--// Top bar
+local Top = Instance.new("Frame")
+Top.Size = UDim2.new(1, 0, 0, 42)
+Top.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+Top.BorderSizePixel = 0
+Top.Parent = Main
+
+local TopCorner = Instance.new("UICorner")
+TopCorner.CornerRadius = UDim.new(0, 10)
+TopCorner.Parent = Top
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, -100, 1, 0)
+Title.Position = UDim2.new(0, 14, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Beta"
+Title.TextColor3 = Color3.fromRGB(235, 235, 240)
+Title.TextSize = 16
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = Top
+
+local Version = Instance.new("TextLabel")
+Version.Size = UDim2.new(0, 55, 1, 0)
+Version.Position = UDim2.new(0, 82, 0, 0)
+Version.BackgroundTransparency = 1
+Version.Text = "v1.0"
+Version.TextColor3 = Color3.fromRGB(100, 100, 110)
+Version.TextSize = 11
+Version.Font = Enum.Font.Gotham
+Version.Parent = Top
+
+--// Minimize
+local Minimize = Instance.new("TextButton")
+Minimize.Size = UDim2.new(0, 35, 0, 30)
+Minimize.Position = UDim2.new(1, -75, 0, 6)
+Minimize.BackgroundTransparency = 1
+Minimize.Text = "—"
+Minimize.TextColor3 = Color3.fromRGB(150, 150, 160)
+Minimize.TextSize = 18
+Minimize.Font = Enum.Font.GothamBold
+Minimize.Parent = Top
+
+--// Close
+local Close = Instance.new("TextButton")
+Close.Size = UDim2.new(0, 35, 0, 30)
+Close.Position = UDim2.new(1, -38, 0, 6)
+Close.BackgroundTransparency = 1
+Close.Text = "×"
+Close.TextColor3 = Color3.fromRGB(150, 150, 160)
+Close.TextSize = 20
+Close.Font = Enum.Font.Gotham
+Close.Parent = Top
+
+--// Sidebar
+local Sidebar = Instance.new("Frame")
+Sidebar.Size = UDim2.new(0, 95, 1, -52)
+Sidebar.Position = UDim2.new(0, 10, 0, 48)
+Sidebar.BackgroundColor3 = Color3.fromRGB(17, 17, 21)
+Sidebar.BorderSizePixel = 0
+Sidebar.Parent = Main
+
+local SideCorner = Instance.new("UICorner")
+SideCorner.CornerRadius = UDim.new(0, 7)
+SideCorner.Parent = Sidebar
+
+--// Content container
+local ContentContainer = Instance.new("Frame")
+ContentContainer.Size = UDim2.new(1, -120, 1, -52)
+ContentContainer.Position = UDim2.new(0, 110, 0, 48)
+ContentContainer.BackgroundTransparency = 1
+ContentContainer.Parent = Main
+
+--// ===== FUNCTIONS TO CREATE TABS =====
+local function createTabButton(text, y)
+    local Tab = Instance.new("TextButton")
+    Tab.Size = UDim2.new(1, -10, 0, 35)
+    Tab.Position = UDim2.new(0, 5, 0, y)
+    Tab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+    Tab.Text = text
+    Tab.TextColor3 = Color3.fromRGB(210, 210, 215)
+    Tab.TextSize = 13
+    Tab.Font = Enum.Font.GothamMedium
+    Tab.Parent = Sidebar
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 6)
+    Corner.Parent = Tab
+
+    return Tab
+end
+
+--// ===== TRADE TAB =====
+local TradeContent = Instance.new("Frame")
+TradeContent.Size = UDim2.new(1, 0, 1, 0)
+TradeContent.BackgroundTransparency = 1
+TradeContent.Parent = ContentContainer
+
+local TradeHeader = Instance.new("TextLabel")
+TradeHeader.Size = UDim2.new(1, 0, 0, 25)
+TradeHeader.BackgroundTransparency = 1
+TradeHeader.Text = "Trade"
+TradeHeader.TextColor3 = Color3.fromRGB(235, 235, 240)
+TradeHeader.TextSize = 16
+TradeHeader.Font = Enum.Font.GothamBold
+TradeHeader.TextXAlignment = Enum.TextXAlignment.Left
+TradeHeader.Parent = TradeContent
+
+local Item = Instance.new("TextButton")
+Item.Size = UDim2.new(1, 0, 0, 34)
+Item.Position = UDim2.new(0, 0, 0, 32)
+Item.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
+Item.Text = "Gold50g"
+Item.TextColor3 = Color3.fromRGB(220, 220, 225)
+Item.TextSize = 13
+Item.Font = Enum.Font.Gotham
+Item.Parent = TradeContent
+
+local ItemCorner = Instance.new("UICorner")
+ItemCorner.CornerRadius = UDim.new(0, 6)
+ItemCorner.Parent = Item
+
+local Amount = Instance.new("TextBox")
+Amount.Size = UDim2.new(0.48, -4, 0, 34)
+Amount.Position = UDim2.new(0, 0, 0, 74)
+Amount.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
+Amount.Text = "6"
+Amount.PlaceholderText = "Amount"
+Amount.TextColor3 = Color3.fromRGB(220, 220, 225)
+Amount.TextSize = 13
+Amount.Font = Enum.Font.Gotham
+Amount.ClearTextOnFocus = false
+Amount.Parent = TradeContent
+
+local AmountCorner = Instance.new("UICorner")
+AmountCorner.CornerRadius = UDim.new(0, 6)
+AmountCorner.Parent = Amount
+
+local Execute = Instance.new("TextButton")
+Execute.Size = UDim2.new(0.52, -4, 0, 34)
+Execute.Position = UDim2.new(0.48, 4, 0, 74)
+Execute.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+Execute.Text = "Execute"
+Execute.TextColor3 = Color3.fromRGB(255, 255, 255)
+Execute.TextSize = 13
+Execute.Font = Enum.Font.GothamBold
+Execute.Parent = TradeContent
+
+local ExecuteCorner = Instance.new("UICorner")
+ExecuteCorner.CornerRadius = UDim.new(0, 6)
+ExecuteCorner.Parent = Execute
+
+local Status = Instance.new("TextLabel")
+Status.Size = UDim2.new(1, 0, 0, 25)
+Status.Position = UDim2.new(0, 0, 0, 116)
+Status.BackgroundTransparency = 1
+Status.Text = "●  Ready"
+Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+Status.TextSize = 11
+Status.Font = Enum.Font.Gotham
+Status.TextXAlignment = Enum.TextXAlignment.Left
+Status.Parent = TradeContent
+
+--// ===== SETTINGS TAB =====
+local SettingsContent = Instance.new("Frame")
+SettingsContent.Size = UDim2.new(1, 0, 1, 0)
+SettingsContent.BackgroundTransparency = 1
+SettingsContent.Visible = false
+SettingsContent.Parent = ContentContainer
+
+local SettingsHeader = Instance.new("TextLabel")
+SettingsHeader.Size = UDim2.new(1, 0, 0, 25)
+SettingsHeader.BackgroundTransparency = 1
+SettingsHeader.Text = "Settings"
+SettingsHeader.TextColor3 = Color3.fromRGB(235, 235, 240)
+SettingsHeader.TextSize = 16
+SettingsHeader.Font = Enum.Font.GothamBold
+SettingsHeader.TextXAlignment = Enum.TextXAlignment.Left
+SettingsHeader.Parent = SettingsContent
+
+--// Size slider
+local SizeLabel = Instance.new("TextLabel")
+SizeLabel.Size = UDim2.new(1, 0, 0, 20)
+SizeLabel.Position = UDim2.new(0, 0, 0, 35)
+SizeLabel.BackgroundTransparency = 1
+SizeLabel.Text = "UI Size: 100%"
+SizeLabel.TextColor3 = Color3.fromRGB(200, 200, 205)
+SizeLabel.TextSize = 12
+SizeLabel.Font = Enum.Font.Gotham
+SizeLabel.TextXAlignment = Enum.TextXAlignment.Left
+SizeLabel.Parent = SettingsContent
+
+local SizeSlider = Instance.new("Frame")
+SizeSlider.Size = UDim2.new(1, 0, 0, 6)
+SizeSlider.Position = UDim2.new(0, 0, 0, 58)
+SizeSlider.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+SizeSlider.BorderSizePixel = 0
+SizeSlider.Parent = SettingsContent
+
+local SizeSliderCorner = Instance.new("UICorner")
+SizeSliderCorner.CornerRadius = UDim.new(0, 3)
+SizeSliderCorner.Parent = SizeSlider
+
+local SizeFill = Instance.new("Frame")
+SizeFill.Size = UDim2.new(1, 0, 1, 0)
+SizeFill.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+SizeFill.BorderSizePixel = 0
+SizeFill.Parent = SizeSlider
+
+local SizeFillCorner = Instance.new("UICorner")
+SizeFillCorner.CornerRadius = UDim.new(0, 3)
+SizeFillCorner.Parent = SizeFill
+
+local SizeButton = Instance.new("TextButton")
+SizeButton.Size = UDim2.new(0, 16, 0, 16)
+SizeButton.Position = UDim2.new(1, -8, 0.5, -8)
+SizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SizeButton.BorderSizePixel = 0
+SizeButton.Text = ""
+SizeButton.Parent = SizeSlider
+
+local SizeButtonCorner = Instance.new("UICorner")
+SizeButtonCorner.CornerRadius = UDim.new(1, 0)
+SizeButtonCorner.Parent = SizeButton
+
+--// Color picker
+local ColorLabel = Instance.new("TextLabel")
+ColorLabel.Size = UDim2.new(1, 0, 0, 20)
+ColorLabel.Position = UDim2.new(0, 0, 0, 78)
+ColorLabel.BackgroundTransparency = 1
+ColorLabel.Text = "Theme Color"
+ColorLabel.TextColor3 = Color3.fromRGB(200, 200, 205)
+ColorLabel.TextSize = 12
+ColorLabel.Font = Enum.Font.Gotham
+ColorLabel.TextXAlignment = Enum.TextXAlignment.Left
+ColorLabel.Parent = SettingsContent
+
+local ColorPicker = Instance.new("Frame")
+ColorPicker.Size = UDim2.new(0, 120, 0, 30)
+ColorPicker.Position = UDim2.new(0, 0, 0, 102)
+ColorPicker.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+ColorPicker.BorderSizePixel = 0
+ColorPicker.Parent = SettingsContent
+
+local ColorPickerCorner = Instance.new("UICorner")
+ColorPickerCorner.CornerRadius = UDim.new(0, 6)
+ColorPickerCorner.Parent = ColorPicker
+
+local ColorPickerButton = Instance.new("TextButton")
+ColorPickerButton.Size = UDim2.new(1, 0, 1, 0)
+ColorPickerButton.BackgroundTransparency = 1
+ColorPickerButton.Text = "Click to change"
+ColorPickerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ColorPickerButton.TextSize = 11
+ColorPickerButton.Font = Enum.Font.Gotham
+ColorPickerButton.Parent = ColorPicker
+
+--// Preset colors
+local Presets = {
+    Color3.fromRGB(55, 90, 155),   -- Blue
+    Color3.fromRGB(220, 50, 50),   -- Red
+    Color3.fromRGB(50, 200, 50),   -- Green
+    Color3.fromRGB(200, 50, 200),  -- Purple
+    Color3.fromRGB(255, 165, 0),   -- Orange
+    Color3.fromRGB(255, 255, 255), -- White
+}
+
+for i, color in ipairs(Presets) do
+    local Preset = Instance.new("TextButton")
+    Preset.Size = UDim2.new(0, 22, 0, 22)
+    Preset.Position = UDim2.new(0, 130 + (i-1) * 28, 0, 102)
+    Preset.BackgroundColor3 = color
+    Preset.BorderSizePixel = 0
+    Preset.Text = ""
+    Preset.Parent = SettingsContent
+    
+    local PresetCorner = Instance.new("UICorner")
+    PresetCorner.CornerRadius = UDim.new(0, 4)
+    PresetCorner.Parent = Preset
+    
+    Preset.MouseButton1Click:Connect(function()
+        ColorPicker.BackgroundColor3 = color
+        Execute.BackgroundColor3 = color
+        SizeFill.BackgroundColor3 = color
+        Main.BackgroundColor3 = Color3.fromRGB(
+            math.floor(color.R * 13),
+            math.floor(color.G * 13),
+            math.floor(color.B * 16)
+        )
+        Sidebar.BackgroundColor3 = Color3.fromRGB(
+            math.floor(color.R * 17),
+            math.floor(color.G * 17),
+            math.floor(color.B * 21)
+        )
+        Top.BackgroundColor3 = Color3.fromRGB(
+            math.floor(color.R * 18),
+            math.floor(color.G * 18),
+            math.floor(color.B * 22)
+        )
+        Status.Text = "●  Theme changed!"
+        Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+    end)
+end
+
+--// ===== TAB BUTTONS =====
+local TradeTab = createTabButton("Trade", 8)
+local SettingsTab = createTabButton("Settings", 48)
+
+--// Tab switching
+TradeTab.MouseButton1Click:Connect(function()
+    TradeContent.Visible = true
+    SettingsContent.Visible = false
+    TradeTab.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+    TradeTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SettingsTab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+    SettingsTab.TextColor3 = Color3.fromRGB(210, 210, 215)
+end)
+
+SettingsTab.MouseButton1Click:Connect(function()
+    TradeContent.Visible = false
+    SettingsContent.Visible = true
+    SettingsTab.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+    SettingsTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TradeTab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+    TradeTab.TextColor3 = Color3.fromRGB(210, 210, 215)
+end)
+
+--// Default: Trade tab active
+TradeTab.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+TradeTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+--// ===== ITEMS FOR TRADE =====
+local Items = {
+    { display = "Gold50g", search = {"Gold50g"} },
+    { display = "Rubles", search = {"Rubles"} },
+    { display = "FlareGun", search = {"FlareGun"} },
+    { display = "7.62x39", search = {"7.62x39T", "7.62.39T", "7.62x39", "762x39T", "762.39T"} }
+}
+local CurrentItem = 1
+
+local function findItemInInventory(itemName)
+    local Inventory = RSP.Inventory.WastelandShirt.Inventory
+    local found = Inventory:FindFirstChild(itemName)
+    if found then return found end
+    
+    for _, child in ipairs(Inventory:GetChildren()) do
+        if string.lower(child.Name) == string.lower(itemName) then
+            return child
+        end
+    end
+    
+    for _, child in ipairs(Inventory:GetChildren()) do
+        local cleanChild = string.gsub(child.Name, "%.", "")
+        local cleanItem = string.gsub(itemName, "%.", "")
+        if string.lower(cleanChild) == string.lower(cleanItem) then
+            return child
+        end
+    end
+    
+    return nil
+end
+
+Item.MouseButton1Click:Connect(function()
+    CurrentItem = CurrentItem % #Items + 1
+    local currentData = Items[CurrentItem]
+    Item.Text = currentData.display
+    Status.Text = "●  Selected: " .. currentData.display
+    Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+end)
+
+Execute.MouseButton1Click:Connect(function()
+    local amount = tonumber(Amount.Text)
+    if not amount or amount < 1 then
+        Status.Text = "●  Invalid amount"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+    amount = math.floor(amount)
+    
+    local currentData = Items[CurrentItem]
+    local foundItem = nil
+    for _, searchName in ipairs(currentData.search) do
+        foundItem = findItemInInventory(searchName)
+        if foundItem then break end
+    end
+    
+    if not foundItem then
+        Status.Text = "●  " .. currentData.display .. " not found"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+    
+    local Trade = RS.Remotes:FindFirstChild("Trade")
+    if not Trade then
+        Status.Text = "●  Trade remote missing"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+    
+    local tradeList = {}
+    for i = 1, amount do
+        table.insert(tradeList, foundItem)
+    end
+    
+    local success, result = pcall(function()
+        return Trade:InvokeServer({Action = "Update", TradeList = tradeList})
+    end)
+    
+    if not success then
+        Status.Text = "●  Update failed"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+    
+    local confirmSuccess, confirmResult = pcall(function()
+        return Trade:InvokeServer({Action = "Confirm"})
+    end)
+    
+    if confirmSuccess then
+        Status.Text = "●  Executed " .. amount .. "x " .. currentData.display
+        Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+    else
+        Status.Text = "●  Confirm failed"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+    end
+end)
+
+--// ===== SIZE SLIDER =====
+local sizeValue = 1
+local isDraggingSize = false
+
+SizeButton.MouseButton1Click:Connect(function()
+    sizeValue = sizeValue + 0.1
+    if sizeValue > 1.5 then sizeValue = 0.7 end
+    
+    SizeFill.Size = UDim2.new(sizeValue / 1.5, 0, 1, 0)
+    SizeLabel.Text = "UI Size: " .. math.floor(sizeValue * 100) .. "%"
+    Main.Size = UDim2.new(0, 360 * sizeValue, 0, 230 * sizeValue)
+    Main.Position = UDim2.new(0.5, -180 * sizeValue, 0.5, -115 * sizeValue)
+end)
+
+--// ===== COLOR PICKER =====
+local colorIndex = 1
+ColorPickerButton.MouseButton1Click:Connect(function()
+    colorIndex = colorIndex % #Presets + 1
+    local color = Presets[colorIndex]
+    
+    ColorPicker.BackgroundColor3 = color
+    Execute.BackgroundColor3 = color
+    SizeFill.BackgroundColor3 = color
+    
+    Main.BackgroundColor3 = Color3.fromRGB(
+        math.floor(color.R * 13),
+        math.floor(color.G * 13),
+        math.floor(color.B * 16)
+    )
+    Sidebar.BackgroundColor3 = Color3.fromRGB(
+        math.floor(color.R * 17),
+        math.floor(color.G * 17),
+        math.floor(color.B * 21)
+    )
+    Top.BackgroundColor3 = Color3.fromRGB(
+        math.floor(color.R * 18),
+        math.floor(color.G * 18),
+        math.floor(color.B * 22)
+    )
+    
+    Status.Text = "●  Theme changed!"
+    Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+end)
+
+--// ===== MINIMIZE =====
+local minimized = false
+Minimize.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    Sidebar.Visible = not minimized
+    ContentContainer.Visible = not minimized
+    Main.Size = minimized and UDim2.new(0, 360 * sizeValue, 0, 42 * sizeValue) or UDim2.new(0, 360 * sizeValue, 0, 230 * sizeValue)
+end)
+
+--// ===== CLOSE =====
+Close.MouseButton1Click:Connect(function()
+    Gui:Destroy()
+end)
+
+--// ===== DRAGGING =====
+local dragging = false
+local dragStart
+local startPosition
+
+Top.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPosition = Main.Position
+    end
+end)
+
+Top.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        Main.Position = UDim2.new(
+            startPosition.X.Scale,
+            startPosition.X.Offset + delta.X,
+            startPosition.Y.Scale,
+            startPosition.Y.Offset + delta.Y
+        )
+    end
+end)
