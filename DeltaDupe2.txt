@@ -1,16 +1,25 @@
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RS = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
-local RSP = RS.Players:WaitForChild(Player.Name)
 
---// GUI
-local Gui = Instance.new("ScreenGui")
-Gui.Name = "XenoBetaHub"
-Gui.ResetOnSpawn = false
-Gui.Parent = PlayerGui
+--// DIAGNOSTIC
+print("[HUB] Starting initialization...")
+
+local RSP
+pcall(function()
+    RSP = RS.Players:WaitForChild(Player.Name, 10)
+end)
+
+if not RSP then
+    print("[HUB] ERROR: RSP path invalid. Check ReplicatedStorage.Players." .. Player.Name)
+    return
+end
+
+print("[HUB] RSP found. Proceeding...")
 
 --// COLORS
 local ThemeColors = {
@@ -26,8 +35,22 @@ local ThemeColors = {
 local currentColor = ThemeColors.Blue
 local uiScale = 1
 
---// Main
+--// CLEAR OLD GUI
+for _, gui in ipairs(PlayerGui:GetChildren()) do
+    if gui.Name == "XenoBetaHub" then
+        gui:Destroy()
+    end
+end
+
+--// GUI CONTAINER
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "XenoBetaHub"
+Gui.ResetOnSpawn = false
+Gui.Parent = PlayerGui
+
+--// MAIN FRAME
 local Main = Instance.new("Frame")
+Main.Name = "MainFrame"
 Main.Size = UDim2.new(0, 360, 0, 230)
 Main.Position = UDim2.new(0.5, -180, 0.5, -115)
 Main.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
@@ -44,8 +67,9 @@ Stroke.Color = Color3.fromRGB(55, 55, 65)
 Stroke.Thickness = 1
 Stroke.Parent = Main
 
---// Top bar
+--// TOP BAR
 local Top = Instance.new("Frame")
+Top.Name = "TopBar"
 Top.Size = UDim2.new(1, 0, 0, 42)
 Top.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
 Top.BorderSizePixel = 0
@@ -64,6 +88,7 @@ Title.TextColor3 = Color3.fromRGB(235, 235, 240)
 Title.TextSize = 16
 Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.TextScaled = false
 Title.Parent = Top
 
 local Version = Instance.new("TextLabel")
@@ -74,10 +99,12 @@ Version.Text = "v1.0"
 Version.TextColor3 = Color3.fromRGB(100, 100, 110)
 Version.TextSize = 11
 Version.Font = Enum.Font.Gotham
+Version.TextScaled = false
 Version.Parent = Top
 
---// Minimize
+--// MINIMIZE BUTTON
 local Minimize = Instance.new("TextButton")
+Minimize.Name = "MinimizeBtn"
 Minimize.Size = UDim2.new(0, 35, 0, 30)
 Minimize.Position = UDim2.new(1, -75, 0, 6)
 Minimize.BackgroundTransparency = 1
@@ -87,8 +114,9 @@ Minimize.TextSize = 18
 Minimize.Font = Enum.Font.GothamBold
 Minimize.Parent = Top
 
---// Close
+--// CLOSE BUTTON
 local Close = Instance.new("TextButton")
+Close.Name = "CloseBtn"
 Close.Size = UDim2.new(0, 35, 0, 30)
 Close.Position = UDim2.new(1, -38, 0, 6)
 Close.BackgroundTransparency = 1
@@ -98,8 +126,9 @@ Close.TextSize = 20
 Close.Font = Enum.Font.Gotham
 Close.Parent = Top
 
---// Sidebar
+--// SIDEBAR
 local Sidebar = Instance.new("Frame")
+Sidebar.Name = "Sidebar"
 Sidebar.Size = UDim2.new(0, 95, 1, -52)
 Sidebar.Position = UDim2.new(0, 10, 0, 48)
 Sidebar.BackgroundColor3 = Color3.fromRGB(17, 17, 21)
@@ -110,87 +139,37 @@ local SideCorner = Instance.new("UICorner")
 SideCorner.CornerRadius = UDim.new(0, 7)
 SideCorner.Parent = Sidebar
 
---// Content container
+--// CONTENT
 local ContentContainer = Instance.new("Frame")
+ContentContainer.Name = "Content"
 ContentContainer.Size = UDim2.new(1, -120, 1, -52)
 ContentContainer.Position = UDim2.new(0, 110, 0, 48)
 ContentContainer.BackgroundTransparency = 1
 ContentContainer.Parent = Main
 
---// ===== FUNCTIONS =====
-local function applyTheme(color)
-    currentColor = color
+--// TAB CREATION FUNCTION
+local function createTab(name, yPos)
+    local tab = Instance.new("TextButton")
+    tab.Name = name .. "Tab"
+    tab.Size = UDim2.new(1, -10, 0, 35)
+    tab.Position = UDim2.new(0, 5, 0, yPos)
+    tab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+    tab.Text = name
+    tab.TextColor3 = Color3.fromRGB(210, 210, 215)
+    tab.TextSize = 13
+    tab.Font = Enum.Font.GothamMedium
+    tab.Parent = Sidebar
     
-    Main.BackgroundColor3 = Color3.fromRGB(
-        math.max(5, math.floor(color.R * 0.05)),
-        math.max(5, math.floor(color.G * 0.05)),
-        math.max(5, math.floor(color.B * 0.06))
-    )
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = tab
     
-    Top.BackgroundColor3 = Color3.fromRGB(
-        math.max(8, math.floor(color.R * 0.07)),
-        math.max(8, math.floor(color.G * 0.07)),
-        math.max(8, math.floor(color.B * 0.08))
-    )
-    
-    Sidebar.BackgroundColor3 = Color3.fromRGB(
-        math.max(7, math.floor(color.R * 0.06)),
-        math.max(7, math.floor(color.G * 0.06)),
-        math.max(7, math.floor(color.B * 0.08))
-    )
-    
-    Execute.BackgroundColor3 = color
-    SizeFill.BackgroundColor3 = color
-    ColorPreview.BackgroundColor3 = color
-    
-    if TradeTab.Visible and TradeContent.Visible then
-        TradeTab.BackgroundColor3 = color
-    end
-    if SettingsTab.Visible and SettingsContent.Visible then
-        SettingsTab.BackgroundColor3 = color
-    end
-    
-    Stroke.Color = Color3.fromRGB(
-        math.min(255, color.R + 30),
-        math.min(255, color.G + 30),
-        math.min(255, color.B + 30)
-    )
+    return tab
 end
 
-local function updateUISize(scale)
-    scale = math.max(0.6, math.min(1.5, scale))
-    uiScale = scale
-    
-    local baseW = 360 * scale
-    local baseH = 230 * scale
-    
-    Main.Size = UDim2.new(0, baseW, 0, baseH)
-    Main.Position = UDim2.new(0.5, -baseW/2, 0.5, -baseH/2)
-    
-    SizeLabel.Text = "UI Size: " .. math.floor(scale * 100) .. "%"
-    SizeFill.Size = UDim2.new(scale / 1.5, 0, 1, 0)
-end
-
-local function createTabButton(text, y)
-    local Tab = Instance.new("TextButton")
-    Tab.Size = UDim2.new(1, -10, 0, 35)
-    Tab.Position = UDim2.new(0, 5, 0, y)
-    Tab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
-    Tab.Text = text
-    Tab.TextColor3 = Color3.fromRGB(210, 210, 215)
-    Tab.TextSize = 13
-    Tab.Font = Enum.Font.GothamMedium
-    Tab.Parent = Sidebar
-
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 6)
-    Corner.Parent = Tab
-
-    return Tab
-end
-
---// ===== TRADE TAB =====
+--// TRADE TAB CONTENT
 local TradeContent = Instance.new("Frame")
+TradeContent.Name = "TradeContent"
 TradeContent.Size = UDim2.new(1, 0, 1, 0)
 TradeContent.BackgroundTransparency = 1
 TradeContent.Parent = ContentContainer
@@ -206,6 +185,7 @@ TradeHeader.TextXAlignment = Enum.TextXAlignment.Left
 TradeHeader.Parent = TradeContent
 
 local Item = Instance.new("TextButton")
+Item.Name = "ItemBtn"
 Item.Size = UDim2.new(1, 0, 0, 34)
 Item.Position = UDim2.new(0, 0, 0, 32)
 Item.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
@@ -220,6 +200,7 @@ ItemCorner.CornerRadius = UDim.new(0, 6)
 ItemCorner.Parent = Item
 
 local Amount = Instance.new("TextBox")
+Amount.Name = "AmountBox"
 Amount.Size = UDim2.new(0.48, -4, 0, 34)
 Amount.Position = UDim2.new(0, 0, 0, 74)
 Amount.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
@@ -236,6 +217,7 @@ AmountCorner.CornerRadius = UDim.new(0, 6)
 AmountCorner.Parent = Amount
 
 local Execute = Instance.new("TextButton")
+Execute.Name = "ExecuteBtn"
 Execute.Size = UDim2.new(0.52, -4, 0, 34)
 Execute.Position = UDim2.new(0.48, 4, 0, 74)
 Execute.BackgroundColor3 = currentColor
@@ -250,6 +232,7 @@ ExecuteCorner.CornerRadius = UDim.new(0, 6)
 ExecuteCorner.Parent = Execute
 
 local Status = Instance.new("TextLabel")
+Status.Name = "StatusLabel"
 Status.Size = UDim2.new(1, 0, 0, 25)
 Status.Position = UDim2.new(0, 0, 0, 116)
 Status.BackgroundTransparency = 1
@@ -260,8 +243,9 @@ Status.Font = Enum.Font.Gotham
 Status.TextXAlignment = Enum.TextXAlignment.Left
 Status.Parent = TradeContent
 
---// ===== SETTINGS TAB =====
+--// SETTINGS TAB CONTENT
 local SettingsContent = Instance.new("Frame")
+SettingsContent.Name = "SettingsContent"
 SettingsContent.Size = UDim2.new(1, 0, 1, 0)
 SettingsContent.BackgroundTransparency = 1
 SettingsContent.Visible = false
@@ -277,8 +261,9 @@ SettingsHeader.Font = Enum.Font.GothamBold
 SettingsHeader.TextXAlignment = Enum.TextXAlignment.Left
 SettingsHeader.Parent = SettingsContent
 
--- Size
+--// SIZE SETTINGS
 local SizeLabel = Instance.new("TextLabel")
+SizeLabel.Name = "SizeLabel"
 SizeLabel.Size = UDim2.new(1, 0, 0, 20)
 SizeLabel.Position = UDim2.new(0, 0, 0, 35)
 SizeLabel.BackgroundTransparency = 1
@@ -290,6 +275,7 @@ SizeLabel.TextXAlignment = Enum.TextXAlignment.Left
 SizeLabel.Parent = SettingsContent
 
 local SizeSlider = Instance.new("Frame")
+SizeSlider.Name = "SizeSlider"
 SizeSlider.Size = UDim2.new(1, 0, 0, 6)
 SizeSlider.Position = UDim2.new(0, 0, 0, 58)
 SizeSlider.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
@@ -301,6 +287,7 @@ SizeSliderCorner.CornerRadius = UDim.new(0, 3)
 SizeSliderCorner.Parent = SizeSlider
 
 local SizeFill = Instance.new("Frame")
+SizeFill.Name = "SizeFill"
 SizeFill.Size = UDim2.new(1, 0, 1, 0)
 SizeFill.BackgroundColor3 = currentColor
 SizeFill.BorderSizePixel = 0
@@ -310,8 +297,8 @@ local SizeFillCorner = Instance.new("UICorner")
 SizeFillCorner.CornerRadius = UDim.new(0, 3)
 SizeFillCorner.Parent = SizeFill
 
--- Size buttons
 local SizeMinus = Instance.new("TextButton")
+SizeMinus.Name = "SizeMinusBtn"
 SizeMinus.Size = UDim2.new(0, 25, 0, 25)
 SizeMinus.Position = UDim2.new(0, 0, 0, 72)
 SizeMinus.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
@@ -326,6 +313,7 @@ SizeMinusCorner.CornerRadius = UDim.new(0, 4)
 SizeMinusCorner.Parent = SizeMinus
 
 local SizePlus = Instance.new("TextButton")
+SizePlus.Name = "SizePlusBtn"
 SizePlus.Size = UDim2.new(0, 25, 0, 25)
 SizePlus.Position = UDim2.new(0, 155, 0, 72)
 SizePlus.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
@@ -339,7 +327,7 @@ local SizePlusCorner = Instance.new("UICorner")
 SizePlusCorner.CornerRadius = UDim.new(0, 4)
 SizePlusCorner.Parent = SizePlus
 
--- Color theme
+--// COLOR SETTINGS
 local ColorLabel = Instance.new("TextLabel")
 ColorLabel.Size = UDim2.new(1, 0, 0, 20)
 ColorLabel.Position = UDim2.new(0, 0, 0, 115)
@@ -352,6 +340,7 @@ ColorLabel.TextXAlignment = Enum.TextXAlignment.Left
 ColorLabel.Parent = SettingsContent
 
 local ColorPreview = Instance.new("Frame")
+ColorPreview.Name = "ColorPreview"
 ColorPreview.Size = UDim2.new(0, 50, 0, 30)
 ColorPreview.Position = UDim2.new(0, 0, 0, 138)
 ColorPreview.BackgroundColor3 = currentColor
@@ -362,12 +351,11 @@ local ColorPreviewCorner = Instance.new("UICorner")
 ColorPreviewCorner.CornerRadius = UDim.new(0, 6)
 ColorPreviewCorner.Parent = ColorPreview
 
--- Color buttons
-local colorButtons = {}
 local colorNames = {"Blue", "Red", "Green", "Purple", "Orange", "Cyan", "Pink"}
 
 for i, name in ipairs(colorNames) do
     local btn = Instance.new("TextButton")
+    btn.Name = name .. "ColorBtn"
     btn.Size = UDim2.new(0, 22, 0, 22)
     btn.Position = UDim2.new(0, 58 + (i-1) * 28, 0, 140)
     btn.BackgroundColor3 = ThemeColors[name]
@@ -380,40 +368,36 @@ for i, name in ipairs(colorNames) do
     corner.Parent = btn
     
     btn.MouseButton1Click:Connect(function()
-        applyTheme(ThemeColors[name])
-        Status.Text = "●  Theme changed to " .. name
+        currentColor = ThemeColors[name]
+        Execute.BackgroundColor3 = currentColor
+        SizeFill.BackgroundColor3 = currentColor
+        ColorPreview.BackgroundColor3 = currentColor
+        Status.Text = "●  Theme: " .. name
         Status.TextColor3 = Color3.fromRGB(100, 190, 125)
     end)
-    
-    colorButtons[name] = btn
 end
 
---// ===== TAB BUTTONS =====
-local TradeTab = createTabButton("Trade", 8)
-local SettingsTab = createTabButton("Settings", 48)
+--// CREATE TAB BUTTONS
+local TradeTab = createTab("Trade", 8)
+local SettingsTab = createTab("Settings", 48)
 
 TradeTab.MouseButton1Click:Connect(function()
     TradeContent.Visible = true
     SettingsContent.Visible = false
     TradeTab.BackgroundColor3 = currentColor
-    TradeTab.TextColor3 = Color3.fromRGB(255, 255, 255)
     SettingsTab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
-    SettingsTab.TextColor3 = Color3.fromRGB(210, 210, 215)
 end)
 
 SettingsTab.MouseButton1Click:Connect(function()
     TradeContent.Visible = false
     SettingsContent.Visible = true
     SettingsTab.BackgroundColor3 = currentColor
-    SettingsTab.TextColor3 = Color3.fromRGB(255, 255, 255)
     TradeTab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
-    TradeTab.TextColor3 = Color3.fromRGB(210, 210, 215)
 end)
 
 TradeTab.BackgroundColor3 = currentColor
-TradeTab.TextColor3 = Color3.fromRGB(255, 255, 255)
 
---// ===== ITEMS =====
+--// ITEMS DATABASE
 local Items = {
     { display = "Gold50g", search = {"Gold50g"} },
     { display = "Rubles", search = {"Rubles"} },
@@ -423,19 +407,26 @@ local Items = {
 local CurrentItem = 1
 
 local function findItem(itemName)
-    local Inventory = RSP.Inventory.WastelandShirt.Inventory
-    
-    -- Direct search
-    local found = Inventory:FindFirstChild(itemName)
-    if found then return found end
-    
-    -- Fuzzy search through all children
-    for _, child in ipairs(Inventory:GetChildren()) do
-        if child.Name:lower():match(itemName:lower():gsub(" ", "")) or 
-           itemName:lower():match(child.Name:lower():gsub(" ", "")) then
-            return child
-        end
+    local Inventory = RSP:FindFirstChild("Inventory")
+    if not Inventory then
+        print("[HUB] Inventory not found in RSP")
+        return nil
     end
+    
+    local WastelandShirt = Inventory:FindFirstChild("WastelandShirt")
+    if not WastelandShirt then
+        print("[HUB] WastelandShirt not found")
+        return nil
+    end
+    
+    local InventoryFolder = WastelandShirt:FindFirstChild("Inventory")
+    if not InventoryFolder then
+        print("[HUB] Inventory folder not found in WastelandShirt")
+        return nil
+    end
+    
+    local found = InventoryFolder:FindFirstChild(itemName)
+    if found then return found end
     
     return nil
 end
@@ -463,12 +454,16 @@ Execute.MouseButton1Click:Connect(function()
     
     for _, name in ipairs(data.search) do
         foundItem = findItem(name)
-        if foundItem then break end
+        if foundItem then
+            print("[HUB] Found item: " .. name)
+            break
+        end
     end
     
     if not foundItem then
         Status.Text = "●  " .. data.display .. " not found"
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        print("[HUB] Could not find any variant of: " .. data.display)
         return
     end
     
@@ -476,6 +471,7 @@ Execute.MouseButton1Click:Connect(function()
     if not Trade then
         Status.Text = "●  Trade remote missing"
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        print("[HUB] Trade remote not found in RS.Remotes")
         return
     end
     
@@ -489,8 +485,9 @@ Execute.MouseButton1Click:Connect(function()
     end)
     
     if not success then
-        Status.Text = "●  Update failed"
+        Status.Text = "●  Update failed: " .. tostring(result)
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        print("[HUB] Update error: " .. tostring(result))
         return
     end
     
@@ -504,39 +501,25 @@ Execute.MouseButton1Click:Connect(function()
     else
         Status.Text = "●  Confirm failed"
         Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        print("[HUB] Confirm error: " .. tostring(confirmResult))
     end
 end)
 
---// ===== SIZE SLIDER =====
-local sliderDragging = false
+--// SIZE CONTROLS
+local function updateUISize(scale)
+    scale = math.max(0.6, math.min(1.5, scale))
+    uiScale = scale
+    
+    local baseW = 360 * scale
+    local baseH = 230 * scale
+    
+    Main.Size = UDim2.new(0, baseW, 0, baseH)
+    Main.Position = UDim2.new(0.5, -baseW/2, 0.5, -baseH/2)
+    
+    SizeLabel.Text = "UI Size: " .. math.floor(scale * 100) .. "%"
+    SizeFill.Size = UDim2.new(scale / 1.5, 0, 1, 0)
+end
 
-SizeSlider.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        sliderDragging = true
-    end
-end)
-
-SizeSlider.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        sliderDragging = false
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if sliderDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local mouse = Players:GetMouse()
-        local sliderPos = SizeSlider.AbsolutePosition.X
-        local sliderSize = SizeSlider.AbsoluteSize.X
-        local mouseX = mouse.X
-        
-        local percent = math.max(0, math.min(1, (mouseX - sliderPos) / sliderSize))
-        local newScale = 0.6 + (percent * 0.9)
-        
-        updateUISize(newScale)
-    end
-end)
-
---// ===== SIZE BUTTONS =====
 SizeMinus.MouseButton1Click:Connect(function()
     updateUISize(uiScale - 0.1)
 end)
@@ -545,34 +528,27 @@ SizePlus.MouseButton1Click:Connect(function()
     updateUISize(uiScale + 0.1)
 end)
 
---// ===== MINIMIZE =====
+--// MINIMIZE/CLOSE
 local minimized = false
 
 Minimize.MouseButton1Click:Connect(function()
     minimized = not minimized
     Sidebar.Visible = not minimized
     ContentContainer.Visible = not minimized
-    
-    if minimized then
-        Main.Size = UDim2.new(0, 360 * uiScale, 0, 42 * uiScale)
-    else
-        Main.Size = UDim2.new(0, 360 * uiScale, 0, 230 * uiScale)
-    end
+    Main.Size = minimized and UDim2.new(0, 360 * uiScale, 0, 42 * uiScale) or UDim2.new(0, 360 * uiScale, 0, 230 * uiScale)
 end)
 
---// ===== CLOSE =====
 Close.MouseButton1Click:Connect(function()
     Gui:Destroy()
 end)
 
---// ===== DRAGGING =====
+--// DRAGGING
 local dragging = false
 local dragStart
 local startPosition
 
 Top.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         dragStart = input.Position
         startPosition = Main.Position
@@ -580,15 +556,13 @@ Top.InputBegan:Connect(function(input)
 end)
 
 Top.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = false
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or 
-                     input.UserInputType == Enum.UserInputType.Touch) then
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
         local delta = input.Position - dragStart
         Main.Position = UDim2.new(
             startPosition.X.Scale,
@@ -599,4 +573,4 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
-applyTheme(currentColor)
+print("[HUB] UI loaded successfully")
