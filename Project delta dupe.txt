@@ -1,0 +1,343 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RS = game:GetService("ReplicatedStorage")
+
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+local RSP = RS.Players:WaitForChild(Player.Name)
+
+--// GUI
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "NebulaHub"
+Gui.ResetOnSpawn = false
+Gui.Parent = PlayerGui
+
+--// Main
+local Main = Instance.new("Frame")
+Main.Size = UDim2.new(0, 360, 0, 230)
+Main.Position = UDim2.new(0.5, -180, 0.5, -115)
+Main.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Parent = Gui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = Main
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Color = Color3.fromRGB(55, 55, 65)
+Stroke.Thickness = 1
+Stroke.Parent = Main
+
+--// Top bar
+local Top = Instance.new("Frame")
+Top.Size = UDim2.new(1, 0, 0, 42)
+Top.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+Top.BorderSizePixel = 0
+Top.Parent = Main
+
+local TopCorner = Instance.new("UICorner")
+TopCorner.CornerRadius = UDim.new(0, 10)
+TopCorner.Parent = Top
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, -100, 1, 0)
+Title.Position = UDim2.new(0, 14, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Nebula"
+Title.TextColor3 = Color3.fromRGB(235, 235, 240)
+Title.TextSize = 16
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = Top
+
+local Version = Instance.new("TextLabel")
+Version.Size = UDim2.new(0, 55, 1, 0)
+Version.Position = UDim2.new(0, 82, 0, 0)
+Version.BackgroundTransparency = 1
+Version.Text = "v1.0"
+Version.TextColor3 = Color3.fromRGB(100, 100, 110)
+Version.TextSize = 11
+Version.Font = Enum.Font.Gotham
+Version.Parent = Top
+
+--// Minimize
+local Minimize = Instance.new("TextButton")
+Minimize.Size = UDim2.new(0, 35, 0, 30)
+Minimize.Position = UDim2.new(1, -75, 0, 6)
+Minimize.BackgroundTransparency = 1
+Minimize.Text = "—"
+Minimize.TextColor3 = Color3.fromRGB(150, 150, 160)
+Minimize.TextSize = 18
+Minimize.Font = Enum.Font.GothamBold
+Minimize.Parent = Top
+
+--// Close
+local Close = Instance.new("TextButton")
+Close.Size = UDim2.new(0, 35, 0, 30)
+Close.Position = UDim2.new(1, -38, 0, 6)
+Close.BackgroundTransparency = 1
+Close.Text = "×"
+Close.TextColor3 = Color3.fromRGB(150, 150, 160)
+Close.TextSize = 20
+Close.Font = Enum.Font.Gotham
+Close.Parent = Top
+
+--// Sidebar
+local Sidebar = Instance.new("Frame")
+Sidebar.Size = UDim2.new(0, 95, 1, -52)
+Sidebar.Position = UDim2.new(0, 10, 0, 48)
+Sidebar.BackgroundColor3 = Color3.fromRGB(17, 17, 21)
+Sidebar.BorderSizePixel = 0
+Sidebar.Parent = Main
+
+local SideCorner = Instance.new("UICorner")
+SideCorner.CornerRadius = UDim.new(0, 7)
+SideCorner.Parent = Sidebar
+
+local function createTab(text, y)
+    local Tab = Instance.new("TextButton")
+    Tab.Size = UDim2.new(1, -10, 0, 35)
+    Tab.Position = UDim2.new(0, 5, 0, y)
+    Tab.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+    Tab.Text = text
+    Tab.TextColor3 = Color3.fromRGB(210, 210, 215)
+    Tab.TextSize = 13
+    Tab.Font = Enum.Font.GothamMedium
+    Tab.Parent = Sidebar
+
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 6)
+    Corner.Parent = Tab
+
+    return Tab
+end
+
+local TradeTab = createTab("Trade", 8)
+local SettingsTab = createTab("Settings", 48)
+
+--// Content
+local Content = Instance.new("Frame")
+Content.Size = UDim2.new(1, -120, 1, -52)
+Content.Position = UDim2.new(0, 110, 0, 48)
+Content.BackgroundTransparency = 1
+Content.Parent = Main
+
+local Header = Instance.new("TextLabel")
+Header.Size = UDim2.new(1, 0, 0, 25)
+Header.BackgroundTransparency = 1
+Header.Text = "Trade"
+Header.TextColor3 = Color3.fromRGB(235, 235, 240)
+Header.TextSize = 16
+Header.Font = Enum.Font.GothamBold
+Header.TextXAlignment = Enum.TextXAlignment.Left
+Header.Parent = Content
+
+--// Item button
+local Item = Instance.new("TextButton")
+Item.Size = UDim2.new(1, 0, 0, 34)
+Item.Position = UDim2.new(0, 0, 0, 32)
+Item.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
+Item.Text = "Gold50g"
+Item.TextColor3 = Color3.fromRGB(220, 220, 225)
+Item.TextSize = 13
+Item.Font = Enum.Font.Gotham
+Item.Parent = Content
+
+local ItemCorner = Instance.new("UICorner")
+ItemCorner.CornerRadius = UDim.new(0, 6)
+ItemCorner.Parent = Item
+
+--// Amount
+local Amount = Instance.new("TextBox")
+Amount.Size = UDim2.new(0.48, -4, 0, 34)
+Amount.Position = UDim2.new(0, 0, 0, 74)
+Amount.BackgroundColor3 = Color3.fromRGB(24, 24, 29)
+Amount.Text = "6"
+Amount.PlaceholderText = "Amount"
+Amount.TextColor3 = Color3.fromRGB(220, 220, 225)
+Amount.TextSize = 13
+Amount.Font = Enum.Font.Gotham
+Amount.ClearTextOnFocus = false
+Amount.Parent = Content
+
+local AmountCorner = Instance.new("UICorner")
+AmountCorner.CornerRadius = UDim.new(0, 6)
+AmountCorner.Parent = Amount
+
+--// Execute
+local Execute = Instance.new("TextButton")
+Execute.Size = UDim2.new(0.52, -4, 0, 34)
+Execute.Position = UDim2.new(0.48, 4, 0, 74)
+Execute.BackgroundColor3 = Color3.fromRGB(55, 90, 155)
+Execute.Text = "Execute"
+Execute.TextColor3 = Color3.fromRGB(255, 255, 255)
+Execute.TextSize = 13
+Execute.Font = Enum.Font.GothamBold
+Execute.Parent = Content
+
+local ExecuteCorner = Instance.new("UICorner")
+ExecuteCorner.CornerRadius = UDim.new(0, 6)
+ExecuteCorner.Parent = Execute
+
+--// Status
+local Status = Instance.new("TextLabel")
+Status.Size = UDim2.new(1, 0, 0, 25)
+Status.Position = UDim2.new(0, 0, 0, 116)
+Status.BackgroundTransparency = 1
+Status.Text = "●  Ready"
+Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+Status.TextSize = 11
+Status.Font = Enum.Font.Gotham
+Status.TextXAlignment = Enum.TextXAlignment.Left
+Status.Parent = Content
+
+--// Items
+local Items = {
+    "Gold50g",
+    "Rubles",
+    "FlareGun"
+}
+
+local CurrentItem = 1
+
+--// Cycle item
+Item.MouseButton1Click:Connect(function()
+    CurrentItem += 1
+
+    if CurrentItem > #Items then
+        CurrentItem = 1
+    end
+
+    Item.Text = Items[CurrentItem]
+    Status.Text = "●  Selected: " .. Items[CurrentItem]
+end)
+
+--// Execute trade
+Execute.MouseButton1Click:Connect(function()
+    local amount = tonumber(Amount.Text)
+
+    if not amount or amount < 1 then
+        Status.Text = "●  Invalid amount"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+
+    amount = math.floor(amount)
+
+    local itemName = Items[CurrentItem]
+
+    local Inventory = RSP.Inventory.WastelandShirt.Inventory
+    local ItemX = Inventory:FindFirstChild(itemName)
+
+    if not ItemX then
+        Status.Text = "●  " .. itemName .. " not found"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+
+    local Trade = RS.Remotes:FindFirstChild("Trade")
+
+    if not Trade then
+        Status.Text = "●  Trade remote missing"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        return
+    end
+
+    local tradeList = {}
+
+    for i = 1, amount do
+        table.insert(tradeList, ItemX)
+    end
+
+    local success, result = pcall(function()
+        return Trade:InvokeServer({
+            Action = "Update",
+            TradeList = tradeList
+        })
+    end)
+
+    if not success then
+        Status.Text = "●  Update failed"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        warn(result)
+        return
+    end
+
+    local confirmSuccess, confirmResult = pcall(function()
+        return Trade:InvokeServer({
+            Action = "Confirm"
+        })
+    end)
+
+    if confirmSuccess then
+        Status.Text = "●  Executed " .. amount .. "x " .. itemName
+        Status.TextColor3 = Color3.fromRGB(100, 190, 125)
+    else
+        Status.Text = "●  Confirm failed"
+        Status.TextColor3 = Color3.fromRGB(220, 100, 100)
+        warn(confirmResult)
+    end
+end)
+
+--// Minimize
+local minimized = false
+
+Minimize.MouseButton1Click:Connect(function()
+    minimized = not minimized
+
+    Sidebar.Visible = not minimized
+    Content.Visible = not minimized
+
+    if minimized then
+        Main.Size = UDim2.new(0, 360, 0, 42)
+    else
+        Main.Size = UDim2.new(0, 360, 0, 230)
+    end
+end)
+
+--// Close
+Close.MouseButton1Click:Connect(function()
+    Gui:Destroy()
+end)
+
+--// Dragging
+local dragging = false
+local dragStart
+local startPosition
+
+Top.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+
+        dragging = true
+        dragStart = input.Position
+        startPosition = Main.Position
+    end
+end)
+
+Top.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+
+        dragging = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (
+        input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch
+    ) then
+
+        local delta = input.Position - dragStart
+
+        Main.Position = UDim2.new(
+            startPosition.X.Scale,
+            startPosition.X.Offset + delta.X,
+            startPosition.Y.Scale,
+            startPosition.Y.Offset + delta.Y
+        )
+    end
+end)
