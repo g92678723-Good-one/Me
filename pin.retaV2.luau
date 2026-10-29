@@ -10710,8 +10710,13 @@ do
                 pos = custom_target_pos
             elseif cursor.CustomPos then
                 pos = cursor.Position
-            else
-                pos = _Vector2new(Mouse.X, Mouse.Y + GuiInset.Y)
+                        else
+                if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+                    local vp = Camera.ViewportSize
+                    pos = _Vector2new(vp.X / 2, vp.Y / 2 + GuiInset.Y)
+                else
+                    pos = _Vector2new(Mouse.X, Mouse.Y + GuiInset.Y)
+                end
             end
             if cursor.rainbow then color = Color3.fromHSV(rainbow, 1, 1) else color = cursor.Color end
             if transp <= 1.5 + cursor.Text.LogoFadingOffset and not reverse then
