@@ -1721,7 +1721,7 @@ do
 								))
 						end
 
-						function Menu.Objects:Text(
+							function Menu.Objects:Text(
 							Translatable,
 							AnchorPoint,
 							Parent,
@@ -1747,6 +1747,8 @@ do
 								TextColor3 = (Color or "Light Text"),
 								TextSize = (TextSize or Visuals2.Fonts["SmallestPixel"][2]),
 								TextXAlignment = (Alignment or "Left"),
+								TextYAlignment = "Center",
+								TextWrapped = true,
 								ZIndex = Index,
 								TextTruncate = Truncate,
 								Translatable = Translatable or nil,
