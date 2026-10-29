@@ -29,6 +29,13 @@ local GuiInset = cloneref(game:GetService("GuiService")):GetGuiInset()
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local Camera = workspace.CurrentCamera
+local dbg = Drawing.new("Text")
+dbg.Text = "VP: " .. workspace.CurrentCamera.ViewportSize.X .. " x " .. workspace.CurrentCamera.ViewportSize.Y
+dbg.Position = Vector2.new(10, 10)
+dbg.Size = 20
+dbg.Color = Color3.new(1, 1, 0)
+dbg.Outline = true
+dbg.Visible = true
 
 local _CFramenew = CFrame.new
 local _Vector2new = Vector2.new
