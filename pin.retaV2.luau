@@ -549,7 +549,7 @@ cheat.utility = {} do
             Visible = true, ZIndex = 1004,
         })
         draw("Text", {
-            Text = "made by checkersam", Size = 11, Center = false,
+            Text = "made by GoodOne", Size = 11, Center = false,
             Position = panel_pos + _Vector2new(14, 108),
             Color = loader_theme.dark_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
@@ -8904,11 +8904,11 @@ do
     for i = 1, 10 do
         _fov_glow_alphas[i] = (1 - (i / 11)) ^ 2
     end
-    cheat.utility.new_renderstepped(LPH_NO_VIRTUALIZE(function(delta)
-        local pos = (_Vector2new(Mouse.X, Mouse.Y + GuiInset.Y))
+        cheat.utility.new_renderstepped(LPH_NO_VIRTUALIZE(function(delta)
+        -- FOV-круг всегда по центру экрана, а не по курсору
+        local vp = Camera.ViewportSize
+        local pos = _Vector2new(vp.X / 2, vp.Y / 2 + GuiInset.Y)
         local fov_active = silent_aim.fov and silent_aim.fov_show
-        local outline_trans = (silent_aim.fov_outline_transparency or 100) / 100
-        local fill_trans = (silent_aim.fov_fill_transparency or 35) / 100
 
         CircleInline.Position = pos
         CircleInline.Radius = silent_aim.fov_size
@@ -9787,8 +9787,8 @@ do
             return
         end
         
-        local pos = _Vector2new(Mouse.X, Mouse.Y + GuiInset.Y)
-        LegitCircleInline.Position = pos
+                local vp = Camera.ViewportSize
+        local pos = _Vector2new(vp.X / 2, vp.Y / 2 + GuiInset.Y)
         LegitCircleInline.Radius = legit_aim.fov_size
         LegitCircleInline.Color = legit_aim.fov_color
         LegitCircleInline.Visible = legit_aim.fov and legit_aim.fov_show
