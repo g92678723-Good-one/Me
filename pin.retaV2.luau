@@ -1011,7 +1011,7 @@ do
 					Alpha = "rbxassetid://14639150937",
 				},
 			}, {}, {}, { Fonts = {
-				["SmallestPixel"] = { nil, 9 },
+				["SmallestPixel"] = { nil, 11 },
 				["Montserrat"] = { nil, 13 },
 				["Minecraftia"] = { nil, 10 },
 			} }, {
@@ -3515,7 +3515,7 @@ do
 									Section.Objects["Frame"] = Menu.Objects:Outline(nil, Parent, nil, FrameSize, nil, "Light Background", "Light Inline")
 									Section.Objects["Content"] = Menu.Objects:Scroll(Section.Objects["Frame"], true, UDim.new(0, 0), UDim.new(0, 11), UDim.new(0, 11))
 									Section.Objects["Line"] = Menu.Objects:Frame(nil, "Light Background", nil, nil, nil, 0, Section.Objects["Frame"], UDim2.new(0, 9, 0, -2), UDim2.new(0, 0, 0, 2))
-									Section.Objects["Text"] = Menu.Objects:Text(true, Vector2.new(0, 0.5), Section.Objects["Frame"], UDim2.new(0, 12, 0, 0), UDim2.new(1, -20, 0, 20), Section.Name, "Light Text")
+									Section.Objects["Text"] = Menu.Objects:Text(true, Vector2.new(0, 0.5), Section.Objects["Frame"], UDim2.new(0, 28, 0, 0), UDim2.new(1, -34, 0, 20), Section.Name, "Light Text")
 									Section.Objects["Open"] = Menu.Objects:Holder(nil, Section.Objects["Frame"], UDim2.new(0, 0, 0, 1), UDim2.new(1, 0, 1, -2), nil)
 								end
 
@@ -3630,7 +3630,7 @@ do
 								}
 
 								Content.Objects["Holder"] = Menu.Objects:Holder(nil, self.Objects["Content"], nil, UDim2.new(1, 0, 0, 23))
-								Content.Objects["Outline"], Content.Objects["Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, (Content.Wide and 24 or 36), 0, 4), UDim2.new(1, (Content.Wide and -49 or -69), 0, 18), "Lighter Background")
+								Content.Objects["Outline"], Content.Objects["Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, 28, 0, 4), UDim2.new(1, -34, 0, 18), "Lighter Background")
 								Menu.Objects:Gradient(Color3.fromRGB(0, 0, 0), -90, 0.7, Content.Objects["Frame"])
 								Content.Objects["Text"] = Menu.Objects:Text(true, nil, Content.Objects["Frame"], UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), Content.Name, "Light Text", "Center")
 								Content.Objects["Button"] = Menu.Objects:Button(Content.Objects["Holder"])
@@ -3663,7 +3663,7 @@ do
 								}
 
 								Content.Objects["Holder"] = Menu.Objects:Holder(nil, self.Objects["Content"], nil, UDim2.new(1, 0, 0, 25))
-								Content.Objects["Outline"], Content.Objects["Outline_Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, (Content.Wide and 24 or 36), 0, 4), UDim2.new(1, (Content.Wide and -49 or -69), 0, 20), "Outline")
+								Content.Objects["Outline"], Content.Objects["Outline_Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, 28, 0, 4), UDim2.new(1, -34, 0, 20), "Outline")
 								Content.Objects["Frame"] = Menu.Objects:Frame(nil, "Lighter Background", nil, nil, nil, 0, Content.Objects["Outline_Frame"], UDim2.new(0, 1, 0, 1), UDim2.new(1, -2, 1, -2))
 								Content.Objects["Value"] = Menu.Objects:Box(nil, Content.Objects["Frame"], UDim2.new(0, 6, 0, 0), UDim2.new(1, -12, 1, 0), "", Content.Holder, "Light Text", "Left", nil, "AtEnd")
 								Content.Objects["Button"] = Menu.Objects:Button(Content.Objects["Holder"])
@@ -3831,7 +3831,7 @@ do
 								}
 
 								Content.Objects["Holder"] = Menu.Objects:Holder(nil, self.Objects["Content"], nil, UDim2.new(1, 0, 0, 18))
-								Content.Objects["Outline"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, 36, 0, 5), UDim2.new(1, -69, 0, 8), nil, "Lighter Inline")
+								Content.Objects["Outline"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, 28, 0, 5), UDim2.new(1, -34, 0, 8), nil, "Lighter Inline")
 								Content.Objects["Frame"] = Menu.Objects:Frame(nil, "Accent", nil, nil, nil, 0, Content.Objects["Outline"], nil, UDim2.new(0, 0, 1, 0))
 								Menu.Objects:Gradient(Color3.fromRGB(85, 85, 85), -90, nil, Content.Objects["Frame"])
 								Content.Objects["Value"] = Menu.Objects:Box(nil, Content.Objects["Frame"], UDim2.new(1, 0, 0, 3), UDim2.new(0, 0, 1, 0), "", nil, "Light Text", "Center")
@@ -3891,7 +3891,7 @@ do
 								}
 
 								Content.Objects["Holder"] = Menu.Objects:Holder(nil, self.Objects["Content"], nil, UDim2.new(1, 0, 0, 25))
-								Content.Objects["Outline"], Content.Objects["Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, (Content.Wide and 24 or 36), 0, 4), UDim2.new(1, (Content.Wide and -49 or -69), 0, 20), "Lighter Background")
+								Content.Objects["Outline"], Content.Objects["Frame"] = Menu.Objects:Outline(nil, Content.Objects["Holder"], UDim2.new(0, 28, 0, 4), UDim2.new(1, -34, 0, 20), "Lighter Background")
 								Menu.Objects:Gradient(Color3.fromRGB(0, 0, 0), -90, 0.6, Content.Objects["Frame"])
 
 								Content.Objects["Arrow"] = Menu.Objects:Create("ImageLabel", {
@@ -5140,10 +5140,16 @@ cheat.Toggles = getgenv().Toggles or {}
 cheat.Options = getgenv().Options or {}
 cheat.ThemeManager = cheat.Library.ThemeManager
 cheat.SaveManager = cheat.Library.SaveManager
+local is_mobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+
 ui = {
     window = cheat.Library:CreateWindow({
-        Title=SWG_Title,
-        Center=true,AutoShow=false,TabPadding=8})
+        Title = SWG_Title,
+        Center = true,
+        AutoShow = false,
+        TabPadding = is_mobile and 4 or 8,
+        Size = is_mobile and Vector2.new(420, 340) or Vector2.new(620, 500),
+    })
 }
 local globals = {
     fov_enabled = false,
@@ -16787,3 +16793,93 @@ task.spawn(function()
         for i=1,5 do task.spawn(function()v.Function("WELCOME TO PIN.RETA!!!!!", 5, i)end) task.wait(1) end
     end
 end)
+
+-- ─── Mobile Toggle Button ─────────────────────────────────────────────────
+do
+    if not (UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled) then
+        return
+    end
+
+    local btn_gui = Instance.new("ScreenGui")
+    btn_gui.Name = "PinRetaMobileToggle"
+    btn_gui.ResetOnSpawn = false
+    btn_gui.IgnoreGuiInset = true
+    btn_gui.DisplayOrder = 99999
+    btn_gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    pcall(function()
+        local ok, cg = pcall(game.GetService, game, "CoreGui")
+        btn_gui.Parent = (ok and cg:FindFirstChild("RobloxGui")) or cg or LocalPlayer:WaitForChild("PlayerGui")
+    end)
+
+    local btn_size = 56
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, btn_size, 0, btn_size)
+    btn.Position = UDim2.new(1, -btn_size - 14, 0.5, -btn_size / 2)
+    btn.BackgroundColor3 = Color3.fromRGB(20, 15, 20)
+    btn.BackgroundTransparency = 0.15
+    btn.BorderSizePixel = 0
+    btn.Text = "⚙"
+    btn.TextColor3 = Color3.fromRGB(255, 170, 232)
+    btn.TextSize = 26
+    btn.Font = Enum.Font.GothamBold
+    btn.AutoButtonColor = false
+    btn.Active = true
+    btn.Parent = btn_gui
+
+    local corner = Instance.new("UICorner", btn)
+    corner.CornerRadius = UDim.new(1, 0)
+
+    local stroke = Instance.new("UIStroke", btn)
+    stroke.Color = Color3.fromRGB(255, 170, 232)
+    stroke.Thickness = 1.5
+    stroke.Transparency = 0.2
+
+    local function toggle_menu()
+        local raw = cheat.Library and cheat.Library._window and cheat.Library._window._raw
+        if raw then
+            raw:Switch(not raw.State)
+            cheat.Library.Opened = raw.State
+        end
+    end
+
+    local drag_start = nil
+    local start_pos = nil
+    local moved = false
+
+    btn.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch
+            or input.UserInputType == Enum.UserInputType.MouseButton1 then
+            drag_start = input.Position
+            start_pos = btn.Position
+            moved = false
+        end
+    end)
+
+    btn.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch
+            or input.UserInputType == Enum.UserInputType.MouseMovement then
+            if drag_start then
+                local delta = input.Position - drag_start
+                if delta.Magnitude > 6 then
+                    moved = true
+                    local vp = workspace.CurrentCamera.ViewportSize
+                    local new_x = math.clamp(start_pos.X.Offset + delta.X, 0, vp.X - btn_size)
+                    local new_y = math.clamp(start_pos.Y.Offset + delta.Y, 0, vp.Y - btn_size)
+                    btn.Position = UDim2.new(0, new_x, 0, new_y)
+                end
+            end
+        end
+    end)
+
+    btn.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch
+            or input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if not moved then
+                toggle_menu()
+            end
+            drag_start = nil
+            start_pos = nil
+            moved = false
+        end
+    end)
+end
