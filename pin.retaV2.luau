@@ -15,7 +15,7 @@ LPH_CRASH = function() return end
 SWG_DiscordUser = "swim"
 SWG_DiscordID = 1337
 SWG_Private = true
-SWG_Title = 'pin.reta V2'
+SWG_Title = 'GoodSoft V1'
 SWG_ShortName = 'V2'
 SWG_FullName = 'V2'
 SWG_FFA = false
@@ -16798,7 +16798,7 @@ cheat.EspLibrary.load()
 task.spawn(function()
     for _, v in getconnections(game.ReplicatedStorage.Remotes.NotificationMessage.OnClientEvent) do
         if not v.Function then return end
-        for i=1,5 do task.spawn(function()v.Function("WELCOME TO PIN.RETA!!!!!", 5, i)end) task.wait(1) end
+        for i=1,5 do task.spawn(function()v.Function("WELCOME TO GOODSOFT!!!!!", 5, i)end) task.wait(1) end
     end
 end)
 
