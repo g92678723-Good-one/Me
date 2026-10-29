@@ -525,13 +525,13 @@ cheat.utility = {} do
             })
         end
         local title_text = draw("Text", {
-            Text = "PIN.RETA V2", Size = 17, Center = false,
+            Text = "GOODSOFT V1", Size = 17, Center = false,
             Position = panel_pos + _Vector2new(14, 16),
             Color = loader_theme.light_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
         })
         draw("Text", {
-            Text = "NEW UI INITIALIZATION", Size = 12, Center = false,
+            Text = "NEW UI SOSIFFICATION", Size = 12, Center = false,
             Position = panel_pos + _Vector2new(14, 42),
             Color = loader_theme.dark_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
