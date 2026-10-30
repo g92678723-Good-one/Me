@@ -4209,7 +4209,7 @@ local function CreatePinRetaNewUIAdapter(NewMenu, NewUtils, NewFlags)
     local Library = {
         Opened = false,
         ToggleKeybind = Enum.KeyCode.RightShift,
-        Scale = (UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled) and 0.8 or 1.25,
+        Scale = (UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled) and 0.8 or 0.8,
         _windows = {},
         _keybinds = {},
         _initialised = false,
