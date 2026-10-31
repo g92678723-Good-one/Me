@@ -15,7 +15,7 @@ LPH_CRASH = function() return end
 SWG_DiscordUser = "swim"
 SWG_DiscordID = 1337
 SWG_Private = true
-SWG_Title = 'pin.reta V2'
+SWG_Title = 'GoodSoft V1'
 SWG_ShortName = 'V2'
 SWG_FullName = 'V2'
 SWG_FFA = false
@@ -532,19 +532,19 @@ cheat.utility = {} do
             })
         end
         local title_text = draw("Text", {
-            Text = "PIN.RETA V2", Size = 17, Center = false,
+            Text = "GOODSOFT V1", Size = 17, Center = false,
             Position = panel_pos + _Vector2new(14, 16),
             Color = loader_theme.light_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
         })
         draw("Text", {
-            Text = "NEW UI INITIALIZATION", Size = 12, Center = false,
+            Text = "NEW UI SOSALIZATION", Size = 12, Center = false,
             Position = panel_pos + _Vector2new(14, 42),
             Color = loader_theme.dark_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
         })
         local status_text = draw("Text", {
-            Text = "LOADING CORE", Size = 12, Center = false,
+            Text = "LOADING PURR", Size = 12, Center = false,
             Position = panel_pos + _Vector2new(14, 77),
             Color = loader_theme.dark_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
@@ -556,7 +556,7 @@ cheat.utility = {} do
             Visible = true, ZIndex = 1004,
         })
         draw("Text", {
-            Text = "made by checkersam", Size = 11, Center = false,
+            Text = "made by goodone", Size = 11, Center = false,
             Position = panel_pos + _Vector2new(14, 108),
             Color = loader_theme.dark_text, Font = Drawing.Fonts.Plex, Outline = true,
             Visible = true, ZIndex = 1004,
@@ -575,11 +575,11 @@ cheat.utility = {} do
             percent_text.Color = live_accent
             percent_text.Text = string.format("%d%%", math.floor(progress * 100 + 0.5))
             if progress < 0.3 then
-                status_text.Text = "LOADING CORE"
+                status_text.Text = "LOADING PURR"
             elseif progress < 0.6 then
-                status_text.Text = "LOADING COMBAT MODULES"
+                status_text.Text = "LOADING CONBAT SAYDULES"
             elseif progress < 0.85 then
-                status_text.Text = "LOADING VISUALS"
+                status_text.Text = "LOADING SIZZUALS"
             else
                 status_text.Text = "FINALIZING INTERFACE"
             end
@@ -594,7 +594,7 @@ cheat.utility = {} do
         end
         bar.Size = _Vector2new(panel_size.X - 28, 5)
         percent_text.Text = "100%"
-        status_text.Text = "READY"
+        status_text.Text = "READY SET GO"
         for _, v in objects do v:Remove() end
         if cheat.Library then
             -- Simulate Right Shift press to toggle menu
@@ -16793,7 +16793,7 @@ cheat.EspLibrary.load()
 task.spawn(function()
     for _, v in getconnections(game.ReplicatedStorage.Remotes.NotificationMessage.OnClientEvent) do
         if not v.Function then return end
-        for i=1,5 do task.spawn(function()v.Function("WELCOME TO PIN.RETA!!!!!", 5, i)end) task.wait(1) end
+        for i=1,5 do task.spawn(function()v.Function("WELCOME TO GOODSOFT", 5, i)end) task.wait(1) end
     end
 end)
 
